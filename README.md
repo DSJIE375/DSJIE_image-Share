@@ -1,6 +1,6 @@
 # DSJIE_image Share
 
-这是一个简单的 PHP 图片展示与 EXIF 信息查看网站，适合本地部署、Docker 容器运行，并可直接开源到 GitHub。
+这是一个简单的 PHP 图片展示与 EXIF 信息查看网站，适合本地部署，并可直接开源到 GitHub。
 
 ## 功能
 
@@ -15,35 +15,11 @@
 1. 将项目目录放入本地 PHP 环境（例如 `phpstudy` 或 `XAMPP`）
 2. 访问 `http://localhost/your-project-path/`
 
-如果你有 PHP 8 环境，也可以直接使用内置服务器：
-
-```bash
-php -S localhost:8000
-```
-
-然后在浏览器访问 `http://localhost:8000`
 
 ## Docker 部署
-
-构建镜像：
-
-```bash
-docker build -t image-exif-viewer .
-```
-
-运行容器：
-
-```bash
-docker run --rm -p 2375:80 -v "%cd%/images:/var/www/html/images" -e ADMIN_USER=admin -e ADMIN_PASS=password image-exif-viewer
-```
-
-然后打开 `http://localhost:8080`
-
-或者使用 `docker-compose`：
-
-```bash
-docker-compose up --build
-```
+### 虽然有docker文件在但是不会搞，完结！
+### 原本想使用 docker-compose部署方便一点的，奈何不会，抱歉！
+### 如果有会使用这个的可以和我咨询  教我，谢谢！！！
 
 ## 目录说明
 
