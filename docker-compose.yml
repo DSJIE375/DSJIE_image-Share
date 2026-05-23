@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    ports:
+      - "2375:80"
+    volumes:
+      - ./images:/var/www/html/images
+    environment:
+      - ADMIN_USER=admin
+      - ADMIN_PASS=password
+    restart: unless-stopped
