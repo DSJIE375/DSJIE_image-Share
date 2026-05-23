@@ -1,4 +1,4 @@
-# Image EXIF Viewer
+# DSJIE_image Share
 
 这是一个简单的 PHP 图片展示与 EXIF 信息查看网站，适合本地部署、Docker 容器运行，并可直接开源到 GitHub。
 
@@ -34,7 +34,7 @@ docker build -t image-exif-viewer .
 运行容器：
 
 ```bash
-docker run --rm -p 8080:80 -v "%cd%/images:/var/www/html/images" -e ADMIN_USER=admin -e ADMIN_PASS=password image-exif-viewer
+docker run --rm -p 2375:80 -v "%cd%/images:/var/www/html/images" -e ADMIN_USER=admin -e ADMIN_PASS=password image-exif-viewer
 ```
 
 然后打开 `http://localhost:8080`
