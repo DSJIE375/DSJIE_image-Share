@@ -1,6 +1,6 @@
 # DSJIE_image Share
 
-这是一个简单的 PHP 图片展示与 EXIF 信息查看网站，适合本地部署，并可直接开源到 GitHub。
+这是一个简单的 PHP 图片展示与 EXIF 信息查看网站。
 
 ## 功能
 
