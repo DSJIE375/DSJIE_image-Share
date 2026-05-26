@@ -229,6 +229,62 @@ function h(string $value): string
             font: inherit;
         }
 
+        .drop-zone {
+            position: relative;
+            width: 98%;
+            min-height: 180px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+            background: #f8fafc;
+            color: #475569;
+            cursor: pointer;
+            transition: border-color .2s ease, background .2s ease;
+        }
+
+        .drop-zone.dragover {
+            background: #e0f2fe;
+            border-color: #38bdf8;
+        }
+
+        .drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .drop-zone-text {
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .drop-zone-text p {
+            margin: 6px 0;
+        }
+
+        .drop-zone-list {
+            width: 100%;
+            margin-top: 14px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .drop-zone-item {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #334155;
+            font-size: .95rem;
+            word-break: break-word;
+        }
+
         .upload-form button {
             padding: 12px 18px;
             border: none;
@@ -383,7 +439,7 @@ function h(string $value): string
         <div class="actions">
             <div>
                 <h1>DSJIE_image Share 管理后台</h1>
-                <p class="small">登录后才能上传图片或短视频，首页仍然展示已上传媒体文件和 EXIF 信息。</p>
+                <p class="small">登录后才能上传图片，首页仍然展示已上传图片和 EXIF 信息。</p>
             </div>
             <div>
                 <a href="index.php">返回首页</a>
@@ -426,8 +482,14 @@ function h(string $value): string
             <h2>上传新图片</h2>
             <form class="upload-form" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="upload">
-                <input type="file" name="images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple required>
-                <p class="small">可以一次选择多张图片上传，支持 JPEG、PNG、GIF、WEBP。</p>
+                <div class="drop-zone" id="dropZone">
+                    <input id="imageInput" type="file" name="images[]" accept="image/*" multiple required>
+                    <div class="drop-zone-text">
+                        <p>拖拽图片到此处，或点击选择文件</p>
+                        <p class="small">可以一次选择多张图片上传。</p>
+                    </div>
+                    <div class="drop-zone-list" id="dropZoneList"></div>
+                </div>
                 <div class="field-row">
                     <label for="title">标题（可选）</label>
                     <input id="title" type="text" name="title" placeholder="上传后显示在首页">
@@ -516,6 +578,73 @@ function h(string $value): string
             <?php endif; ?>
         </div>
     </div>
+    <script>
+        (function () {
+            var dropZone = document.getElementById('dropZone');
+            var fileInput = document.getElementById('imageInput');
+            var fileList = document.getElementById('dropZoneList');
+
+            function formatFileSize(size) {
+                if (size >= 1048576) {
+                    return (size / 1048576).toFixed(1) + ' MB';
+                }
+                if (size >= 1024) {
+                    return (size / 1024).toFixed(1) + ' KB';
+                }
+                return size + ' B';
+            }
+
+            function updateList() {
+                if (!fileInput.files) {
+                    fileList.innerHTML = '';
+                    return;
+                }
+                var files = Array.from(fileInput.files);
+                fileList.innerHTML = '';
+                if (!files.length) {
+                    return;
+                }
+                files.forEach(function (file) {
+                    var item = document.createElement('div');
+                    item.className = 'drop-zone-item';
+                    item.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
+                    fileList.appendChild(item);
+                });
+            }
+
+            function setFiles(files) {
+                if (typeof DataTransfer !== 'undefined') {
+                    var dataTransfer = new DataTransfer();
+                    Array.from(files).forEach(function (file) {
+                        dataTransfer.items.add(file);
+                    });
+                    fileInput.files = dataTransfer.files;
+                }
+                updateList();
+            }
+
+            fileInput.addEventListener('change', updateList);
+
+            ['dragenter', 'dragover'].forEach(function (name) {
+                dropZone.addEventListener(name, function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    dropZone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(function (name) {
+                dropZone.addEventListener(name, function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    dropZone.classList.remove('dragover');
+                    if (name === 'drop' && event.dataTransfer && event.dataTransfer.files.length) {
+                        setFiles(event.dataTransfer.files);
+                    }
+                });
+            });
+        })();
+    </script>
 </body>
 
 </html>

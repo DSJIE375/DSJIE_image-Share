@@ -125,7 +125,7 @@ function h(string $value): string
             </div>
             <button type="submit">登录</button>
         </form>
-        <p class="note">默认登录：用户名 <strong>admin</strong> 密码 <strong>password</strong>。<br />建议在 Docker 或服务器环境里用环境变量
+        <p class="note">默认登录：用户名 <strong>admin</strong> 密码 <strong>password</strong>。<br />建议在服务器环境里用环境变量
             `ADMIN_USER` / `ADMIN_PASS` 修改 DSJIE_image Share 的管理员账号。</p>
         <a class="link" href="index.php">返回首页</a>
     </div>
